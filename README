@@ -1,0 +1,87 @@
+# EcoFlow Systems: Sistema Inteligente de Riego y Monitoreo Ambiental 🌿💧
+
+**EcoFlow Systems** es una solución de ingeniería diseñada para la gestión automatizada y eficiente del agua en entornos agrícolas y domésticos. Mediante el uso de tecnología IoT (Internet of Things) y comunicación de largo alcance (LoRa), el sistema optimiza el recurso hídrico basándose en datos ambientales en tiempo real.
+
+---
+
+## 🚀 Propuesta de Valor
+Este proyecto nace de la necesidad de transformar el riego tradicional en un proceso inteligente. Sus pilares fundamentales son:
+* **Sostenibilidad:** Reducción drástica del desperdicio de agua mediante sensores de precisión.
+* **Eficiencia:** Automatización total que elimina la dependencia del factor humano.
+* **Escalabilidad:** Arquitectura modular basada en ESP32, adaptable desde pequeños huertos urbanos hasta explotaciones agrícolas medianas.
+
+---
+
+## 📡 Arquitectura del Sistema (IoT LoRa)
+El sistema utiliza una topología de red inalámbrica diseñada para cubrir grandes distancias sin depender de infraestructuras complejas.
+
+### 1. Nodo Emisor (Campo)
+Ubicado en la zona de cultivo, se encarga de la telemetría. Captura variables críticas:
+* **Humedad del Suelo:** Determina la necesidad real de riego.
+* **Calidad del Aire (O2 y Gas):** Monitoriza la salud del entorno ambiental.
+* **Temperatura y Humedad Ambiente:** Ajusta los ciclos de riego según la evaporación.
+
+### 2. Nodo Repetidor
+Un eslabón estratégico que amplifica y retransmite la señal LoRa. Su función es garantizar que los datos superen obstáculos físicos (muros, vegetación densa) y lleguen íntegros al centro de control.
+
+### 3. Nodo Receptor (Gestión)
+Centraliza la información recibida para su procesamiento dual:
+* **Visualización Local:** Interfaz gráfica desarrollada en *Processing*.
+* **Visualización Cloud:** Sincronización con *ThingSpeak* para análisis histórico y acceso remoto.
+
+---
+
+## 🛠️ Especificaciones de Hardware
+El diseño electrónico prioriza la estabilidad de voltaje y la protección de los componentes críticos.
+
+### Componentes Principales
+| Componente | Especificación Técnica |
+| :--- | :--- |
+| **Microcontrolador** | Heltec WiFi LoRa V3 (ESP32) |
+| **Actuador** | Electroválvula de 9V |
+| **Control de Carga** | Puente H (L298N o similar para conmutación) |
+| **Regulación** | Regulador de voltaje 7805 (9V a 5V) |
+| **Protección** | Diodo Flyback (protección contra picos inductivos) |
+| **Filtrado** | Condensadores electrolíticos para estabilización de línea |
+
+### Lógica de Conexión
+1.  **Fuente de Energía:** Una entrada de 9V alimenta la electroválvula y el regulador 7805.
+2.  **Alimentación Lógica:** El 7805 entrega 5V constantes al pin VCC del Heltec, garantizando que el microcontrolador no sufra fluctuaciones por la carga de la válvula.
+3.  **Control de Riego:** El Heltec gestiona la apertura mediante señales digitales a los pines **AIN1/AIN2** del Puente H, el cual permite el paso de corriente hacia la válvula.
+
+---
+
+## 💻 Integración en la Nube y Software
+
+### Configuración de ThingSpeak
+Los datos se transmiten mediante peticiones HTTP/MQTT y se organizan en los siguientes campos:
+* **Field 1:** Humedad del Suelo (%)
+* **Field 2:** Concentración de Oxígeno (O2)
+* **Field 3:** Niveles de Gas
+* **Field 4:** Humedad Ambiente
+* **Field 5:** Temperatura Ambiente
+
+### Configuración de Red (Infraestructura)
+Para el despliegue del receptor, se utiliza un Router Zylex configurado con parámetros de seguridad industrial:
+* **IP de Acceso:** `192.168.1.1` | **User:** `admin` | **Pass:** `admin`
+* **Seguridad:** WPA2-PSK / WPA3.
+* **Optimización:** DHCP activo y ajuste de canales para evitar interferencias en la banda de 2.4GHz.
+
+---
+
+## 🔧 Guía de Instalación y Seguridad
+Para asegurar el correcto funcionamiento, siga estos pasos de verificación:
+1.  **Test de Voltaje:** Antes de conectar el Heltec, verifique con un multímetro que la salida del regulador 7805 sea de exactamente 5V.
+2.  **Aislamiento:** Asegúrese de que la caja de control sea estanca para proteger la electrónica de la humedad exterior.
+3.  **Tierras:** Verifique que todos los componentes compartan una referencia común (GND) para evitar errores en las lecturas de los sensores.
+
+---
+
+## 📈 Hoja de Ruta (Roadmap)
+El proyecto está diseñado para evolucionar en las siguientes fases:
+- [ ] **Fase 1:** Implementación de algoritmos de Machine Learning para riego predictivo basado en el clima.
+- [ ] **Fase 2:** Integración con asistentes de voz (Alexa/Google Home).
+- [ ] **Fase 3:** Desarrollo de una aplicación móvil nativa para control manual remoto.
+
+---
+**EcoFlow Systems** - *Tecnología sostenible para el futuro de la agricultura.*
