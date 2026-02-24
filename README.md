@@ -237,7 +237,7 @@ Marcar como público.
 
 ## Envío de Datos
 
-https://api.thingspeak.com/update?api_key=TU_WRITE_API_KEY&field1=VALOR1&field2=VALOR2
+https://thingspeak.mathworks.com/channels/3228028
 
 ## Visualizaciones
 
